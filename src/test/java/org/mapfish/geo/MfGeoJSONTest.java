@@ -101,6 +101,45 @@ public class MfGeoJSONTest extends TestCase
         builder.encodeFeature(f1);
         geojsonResulted = stringer.toString();
         assertTrue(geojsonExpected.equals(geojsonResulted));
+        
+        // encodeFeature test with null internal geometry
+        stringer = new JSONStringer();
+        builder = new MfGeoJSON(stringer);
+        f1 = new MfFeature() {
+            public String getFeatureId() {
+                return "fid_foo";
+            }
+            public MfGeometry getMfGeometry() {
+                return new MfGeometry(null);
+            }
+            public void toJSON(JSONBuilder builder) {
+                builder.key("prop_foo").value("foo");
+            }
+        };
+        geojsonExpected =
+            "{\"type\":\"Feature\",\"id\":\"fid_foo\",\"geometry\":null,\"properties\":{\"prop_foo\":\"foo\"}}";
+        builder.encodeFeature(f1);
+        geojsonResulted = stringer.toString();
+        assertTrue(geojsonExpected.equals(geojsonResulted));
+
+        // encodeFeature test with null geometry
+        stringer = new JSONStringer();
+        builder = new MfGeoJSON(stringer);
+        f1 = new MfFeature() {
+            public String getFeatureId() {
+                return "fid_foo";
+            }
+            public MfGeometry getMfGeometry() {
+                return null;
+            }
+            public void toJSON(JSONBuilder builder) {
+                builder.key("prop_foo").value("foo");
+            }
+        };
+        // use geojsonExpected as defined above
+        builder.encodeFeature(f1);
+        geojsonResulted = stringer.toString();
+        assertTrue(geojsonExpected.equals(geojsonResulted));
 
         // encodeFeatureCollection test
         stringer = new JSONStringer();

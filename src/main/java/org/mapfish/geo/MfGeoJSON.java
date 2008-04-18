@@ -106,8 +106,14 @@ public class MfGeoJSON {
         builder.key("id").value(f.getFeatureId());
         builder.key("geometry");
         
-        Geometry g = f.getMfGeometry().getInternalGeometry();
-        encodeGeometry(g);
+        Geometry g;
+        MfGeometry mfg;
+        if (((mfg = f.getMfGeometry()) != null) &&
+            ((g = mfg.getInternalGeometry()) != null)) {
+            encodeGeometry(g);
+        } else {
+            builder.value(null);
+        }
         
         builder.key("properties");
         builder.object();
