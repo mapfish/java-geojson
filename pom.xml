@@ -5,9 +5,69 @@
   <groupId>org.mapfish.geo</groupId>
   <artifactId>mapfish-geo-lib</artifactId>
   <packaging>jar</packaging>
-  <version>0.1</version>
+  <version>0.3</version>
+
   <name>mapfish-geo-lib</name>
-  <url>http://maven.apache.org</url>
+  <description>A java library for generating GeoJSON structures</description>
+  <url>http://www.mapfish.org/</url>
+  <organization>
+    <name>Camptocamp SA</name>
+    <url>http://www.camptocamp.com/</url>
+  </organization>
+  <issueManagement>
+    <url>https://www.mapfish.org/trac/mapfish/report</url>
+  </issueManagement>
+  <mailingLists>
+    <mailingList>
+      <name>Users</name>
+      <subscribe>users-subscribe@mapfish.org</subscribe>
+      <unsubscribe>users-subscribe@mapfish.org</unsubscribe>
+      <post>users@mapfish.org</post>
+      <archive>http://www.mapfish.org/pipermail/users/</archive>
+    </mailingList>
+    <mailingList>
+      <name>Dev</name>
+      <subscribe>dev-subscribe@mapfish.org</subscribe>
+      <unsubscribe>dev-subscribe@mapfish.org</unsubscribe>
+      <post>dev@mapfish.org</post>
+      <archive>http://www.mapfish.org/pipermail/dev/</archive>
+    </mailingList>
+    <mailingList>
+      <name>Commits</name>
+      <subscribe>commits-subscribe@mapfish.org</subscribe>
+      <unsubscribe>commits-subscribe@mapfish.org</unsubscribe>
+      <post>commits@mapfish.org</post>
+      <archive>http://www.mapfish.org/pipermail/commits/</archive>
+    </mailingList>
+    <mailingList>
+      <name>Trac</name>
+      <subscribe>trac-subscribe@mapfish.org</subscribe>
+      <unsubscribe>trac-subscribe@mapfish.org</unsubscribe>
+      <post>trac@mapfish.org</post>
+      <archive>http://www.mapfish.org/pipermail/trac/</archive>
+    </mailingList>
+  </mailingLists>
+  <developers>
+    <developer>
+      <name>Eric Lemoine</name>
+      <id>elemoine</id>
+      <email>eric.lemoine@camptocamp.com</email>
+      <organizationUrl>http://www.camptocamp.com/</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Frederic Junod</name>
+      <id>fredj</id>
+      <email>fredericjunod@camptocamp.com</email>
+      <organizationUrl>http://www.camptocamp.com/</organizationUrl>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
 
   <build>
     <plugins>
@@ -60,6 +120,61 @@
       <name>HMS inc</name>
       <url>https://internal.hmsinc.com/m2-repo</url>
     </repository>
-
   </repositories>
+
+  <licenses>
+    <license>
+      <name>BSD License</name>
+      <url>http://www.opensource.org/licenses/bsd-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>
+      scm:svn:http://www.mapfish.org/svn/mapfish/trunk/MapFish/server/java/mapfish-geo-lib
+    </connection>
+    <developerConnection>
+      scm:svn:http://www.mapfish.org/svn/mapfish/trunk/MapFish/server/java/mapfish-geo-lib
+    </developerConnection>
+    <tag>HEAD</tag>
+    <url>
+      https://www.mapfish.org/trac/mapfish/browser/trunk/MapFish/server/java/mapfish-geo-lib
+    </url>
+  </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>org.mapfish</id>
+      <url>
+        scpexe://dev.mapfish.org/var/www/dev.mapfish.org/htdocs/maven/repository
+      </url>
+    </repository>
+    <site>
+      <id>org.mapfish</id>
+      <name>MapFish Maven Projects</name>
+      <url>
+        scpexe://dev.mapfish.org/var/www/dev.mapfish.org/htdocs/maven/site/mapfish-geo-lib
+      </url>
+    </site>
+    <downloadUrl>http://dev.mapfish.org/maven/repository</downloadUrl>
+  </distributionManagement>
+
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changelog-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
