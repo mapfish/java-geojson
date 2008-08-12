@@ -17,18 +17,10 @@
  * along with MapFish.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * MfGeo.java
- *
- * Created on January 21, 2008, 8:02 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package org.mapfish.geo;
 
 /**
+ * Base class for GeoJSON objects
  *
  * @author Eric Lemoine, Camptocamp.
  */

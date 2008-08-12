@@ -17,15 +17,6 @@
  * along with MapFish.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * MfGeometry.java
- *
- * Created on January 21, 2008, 8:13 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package org.mapfish.geo;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -35,19 +26,17 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Eric Lemoine, Camptocamp.
  */
 public class MfGeometry implements MfGeo {
-    private final GeoType geoType;
     private final Geometry jtsGeometry;
     
     /**
      * Creates a new instance of MfGeometry
      */
     public MfGeometry(Geometry jtsGeometry) {
-        this.geoType = GeoType.GEOMETRY;
         this.jtsGeometry = jtsGeometry;
     }
     
     public GeoType getGeoType() {
-        return geoType;
+        return GeoType.GEOMETRY;
     }
     
     public Geometry getInternalGeometry() {

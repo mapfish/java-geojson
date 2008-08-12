@@ -19,32 +19,19 @@
 
 package org.mapfish.geo;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import junit.framework.TestCase;
+import org.json.JSONObject;
 
-/**
- * Unit test for MfFeature.
- */
-public class MfGeometryTest extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public MfGeometryTest(String testName) {
-        super(testName);
+import java.util.Collection;
+
+public abstract class MfGeoFactory {
+    public MfFeatureCollection createFeatureCollection(Collection<MfFeature> collection) {
+        return new MfFeatureCollection(collection);
     }
 
-    /**
-     * Test.
-     */
-    public void testMfGeometry() {
-        Geometry g = new GeometryFactory().createPoint(new Coordinate());
-        MfGeometry mg = new MfGeometry(g);
-        assertTrue(mg.getGeoType().equals(MfGeo.GeoType.GEOMETRY));
-        assertTrue(mg.getInternalGeometry() == g);
+    public abstract MfFeature createFeature(String id, MfGeometry geometry, JSONObject properties);
+
+    public MfGeometry createGeometry(Geometry jtsGeometry) {
+        return new MfGeometry(jtsGeometry);
     }
 }

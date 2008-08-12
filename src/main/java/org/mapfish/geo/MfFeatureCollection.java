@@ -17,15 +17,6 @@
  * along with MapFish.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * MfFeatureCollection.java
- *
- * Created on January 21, 2008, 8:56 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package org.mapfish.geo;
 
 import java.util.Collection;
@@ -35,19 +26,17 @@ import java.util.Collection;
  * @author Eric Lemoine, Camptocamp.
  */
 public class MfFeatureCollection implements MfGeo {
-    private final GeoType geoType;
     private final Collection<MfFeature> collection;
 
     /**
      * Creates a new instance of MfFeatureCollection
      */
     public MfFeatureCollection(Collection<MfFeature> collection) {
-        this.geoType = GeoType.FEATURECOLLECTION;
         this.collection = collection;
     }
        
     public GeoType getGeoType() {
-        return geoType;
+        return GeoType.FEATURECOLLECTION;
     }
     
     public Collection<MfFeature> getCollection() {

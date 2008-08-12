@@ -17,35 +17,24 @@
  * along with MapFish.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * MfFeature.java
- *
- * Created on January 21, 2008, 8:43 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
 package org.mapfish.geo;
 
-import net.sf.json.util.JSONBuilder;
+import org.json.JSONWriter;
+import org.json.JSONException;
 
 /**
  *
  * @author Eric Lemoine, Camptocamp.
  */
 public abstract class MfFeature implements MfGeo {
-    private final GeoType geoType;
-    
     /**
      * Creates a new instance of MfFeature
      */
     protected MfFeature() {
-        geoType = GeoType.FEATURE;
     }
     
     public GeoType getGeoType() {
-        return geoType;
+        return GeoType.FEATURE;
     }
     
     // Subclasses must implement these methods. -----------
@@ -56,5 +45,5 @@ public abstract class MfFeature implements MfGeo {
     /**
      * Add the "key" and "value" pairs to the provided builder.
      */
-    public abstract void toJSON(JSONBuilder builder);
+    public abstract void toJSON(JSONWriter builder) throws JSONException;
 }

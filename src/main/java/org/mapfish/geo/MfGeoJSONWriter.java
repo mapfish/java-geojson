@@ -39,14 +39,14 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import net.sf.json.JSONException;
-import net.sf.json.util.JSONBuilder;
+import org.json.JSONException;
+import org.json.JSONWriter;
 
 import java.util.Iterator;
 
 
 /**
- * This class is coded against the draft 5 version of the spec
+ * This class is coded against the version 1.0 of the spec
  * on http://geojson.org.
  *
  * The code of this class is greatly inspired from the GeoJSONBuilder
@@ -58,14 +58,14 @@ import java.util.Iterator;
  * @version $Id$
  *
  */
-public class MfGeoJSON {
-    private final JSONBuilder builder;
-    
-    public MfGeoJSON(JSONBuilder builder) {
+public class MfGeoJSONWriter {
+    private final JSONWriter builder;
+
+    public MfGeoJSONWriter(JSONWriter builder) {
         this.builder = builder;
     }
-    
-    public void encode(MfGeo o) {
+
+    public void encode(MfGeo o) throws JSONException {
         switch (o.getGeoType()) {
             case FEATURE:
                 MfFeature f = (MfFeature)o;
@@ -83,29 +83,29 @@ public class MfGeoJSON {
                 throw new RuntimeException("No implementation for " + o.getGeoType());
         }
     }
-    
+
     public void encodeFeatureCollection(MfFeatureCollection c) throws JSONException {
         builder.object();
         builder.key("type").value("FeatureCollection");
         builder.key("features");
         builder.array();
-        
+
         Iterator<MfFeature> i = c.getCollection().iterator();
         while (i.hasNext()) {
             MfFeature f = i.next();
             encodeFeature(f);
         }
-        
+
         builder.endArray();
         builder.endObject();
     }
-    
+
     public void encodeFeature(MfFeature f) throws JSONException {
         builder.object();
         builder.key("type").value("Feature");
         builder.key("id").value(f.getFeatureId());
         builder.key("geometry");
-        
+
         Geometry g;
         MfGeometry mfg;
         if (((mfg = f.getMfGeometry()) != null) &&
@@ -114,7 +114,7 @@ public class MfGeoJSON {
         } else {
             builder.value(null);
         }
-        
+
         builder.key("properties");
         builder.object();
         f.toJSON(builder);
@@ -170,11 +170,11 @@ public class MfGeoJSON {
         } else {
             encodeGeomCollection((GeometryCollection) g);
         }
-        
+
         builder.endObject();
     }
 
-    private void encodeGeomCollection(GeometryCollection collection) {
+    private void encodeGeomCollection(GeometryCollection collection) throws JSONException {
         builder.array();
         builder.key("geometries");
 
@@ -202,7 +202,7 @@ public class MfGeoJSON {
         builder.endArray();
     }
 
-    private void encodeCoordinate(Coordinate coord) {
+    private void encodeCoordinate(Coordinate coord) throws JSONException {
         builder.array();
         builder.value(coord.x);
         builder.value(coord.y);
@@ -213,7 +213,7 @@ public class MfGeoJSON {
      * Turns an envelope into an array [minX,minY,maxX,maxY]
      * @param env envelope representing bounding box
      */
-    protected void encodeBoundingBox(Envelope env) {
+    protected void encodeBoundingBox(Envelope env) throws JSONException {
     	builder.key("bbox");
     	builder.array();
     	builder.value(env.getMinX());

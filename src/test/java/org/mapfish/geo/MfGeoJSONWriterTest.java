@@ -1,39 +1,55 @@
+/*
+ * Copyright (C) 2008  Camptocamp
+ *
+ * This file is part of MapFish
+ *
+ * MapFish is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * MapFish is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with MapFish.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.mapfish.geo;
 
-import java.util.LinkedList;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import net.sf.json.util.JSONBuilder;
-import net.sf.json.util.JSONStringer;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
+import junit.framework.TestCase;
+import org.json.JSONStringer;
+import org.json.JSONWriter;
+import org.json.JSONException;
+
+import java.util.LinkedList;
 
 /**
  * Unit test for MfGeoJSON.
  */
-public class MfGeoJSONTest extends TestCase
+public class MfGeoJSONWriterTest extends TestCase
 {
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public MfGeoJSONTest(String testName) {
+    public MfGeoJSONWriterTest(String testName) {
         super(testName);
     }
 
     /**
      * Test.
      */
-    public void testMfGeoJSON() {
+    public void testMfGeoJSON() throws JSONException {
         JSONStringer stringer;
-        MfGeoJSON builder;
+        MfGeoJSONWriter builder;
 
         Geometry g;
 
@@ -50,7 +66,7 @@ public class MfGeoJSONTest extends TestCase
 
         // encodeGeometry POINT test
         stringer = new JSONStringer();
-        builder = new MfGeoJSON(stringer);
+        builder = new MfGeoJSONWriter(stringer);
         g = new GeometryFactory().createPoint(coord1);
         geojsonExpected =
             "{\"type\":\"Point\",\"coordinates\":[1.1,2.2]}";
@@ -60,7 +76,7 @@ public class MfGeoJSONTest extends TestCase
 
         // encodeGeometry LINESTRING test
         stringer = new JSONStringer();
-        builder = new MfGeoJSON(stringer);
+        builder = new MfGeoJSONWriter(stringer);
         Coordinate[] coordArrayLS = {coord1, coord2};
         g = new GeometryFactory().createLineString(coordArrayLS);
         geojsonExpected =
@@ -71,7 +87,7 @@ public class MfGeoJSONTest extends TestCase
 
         // encodeGeometry POLYGON test
         stringer = new JSONStringer();
-        builder = new MfGeoJSON(stringer);
+        builder = new MfGeoJSONWriter(stringer);
         Coordinate[] coordArrayLR = {coord1, coord2, coord3, coord1};
         LinearRing lr = new GeometryFactory().createLinearRing(coordArrayLR);
         g = new GeometryFactory().createPolygon(lr, null);
@@ -83,7 +99,7 @@ public class MfGeoJSONTest extends TestCase
 
         // encodeFeature test
         stringer = new JSONStringer();
-        builder = new MfGeoJSON(stringer);
+        builder = new MfGeoJSONWriter(stringer);
         f1 = new MfFeature() {
             public String getFeatureId() {
                 return "fid_foo";
@@ -92,7 +108,7 @@ public class MfGeoJSONTest extends TestCase
                 return new MfGeometry(
                     new GeometryFactory().createPoint(coord1));
             }
-            public void toJSON(JSONBuilder builder) {
+            public void toJSON(JSONWriter builder) throws JSONException {
                 builder.key("prop_foo").value("foo");
             }
         };
@@ -104,7 +120,7 @@ public class MfGeoJSONTest extends TestCase
         
         // encodeFeature test with null internal geometry
         stringer = new JSONStringer();
-        builder = new MfGeoJSON(stringer);
+        builder = new MfGeoJSONWriter(stringer);
         f1 = new MfFeature() {
             public String getFeatureId() {
                 return "fid_foo";
@@ -112,7 +128,7 @@ public class MfGeoJSONTest extends TestCase
             public MfGeometry getMfGeometry() {
                 return new MfGeometry(null);
             }
-            public void toJSON(JSONBuilder builder) {
+            public void toJSON(JSONWriter builder) throws JSONException {
                 builder.key("prop_foo").value("foo");
             }
         };
@@ -124,7 +140,7 @@ public class MfGeoJSONTest extends TestCase
 
         // encodeFeature test with null geometry
         stringer = new JSONStringer();
-        builder = new MfGeoJSON(stringer);
+        builder = new MfGeoJSONWriter(stringer);
         f1 = new MfFeature() {
             public String getFeatureId() {
                 return "fid_foo";
@@ -132,7 +148,7 @@ public class MfGeoJSONTest extends TestCase
             public MfGeometry getMfGeometry() {
                 return null;
             }
-            public void toJSON(JSONBuilder builder) {
+            public void toJSON(JSONWriter builder) throws JSONException {
                 builder.key("prop_foo").value("foo");
             }
         };
@@ -143,7 +159,7 @@ public class MfGeoJSONTest extends TestCase
 
         // encodeFeatureCollection test
         stringer = new JSONStringer();
-        builder = new MfGeoJSON(stringer);
+        builder = new MfGeoJSONWriter(stringer);
         f1 = new MfFeature() {
             public String getFeatureId() {
                 return "fid_foo";
@@ -152,7 +168,7 @@ public class MfGeoJSONTest extends TestCase
                 return new MfGeometry(
                     new GeometryFactory().createPoint(coord1));
             }
-            public void toJSON(JSONBuilder builder) {
+            public void toJSON(JSONWriter builder) throws JSONException {
                 builder.key("prop_foo").value("foo");
             }
         };
@@ -164,7 +180,7 @@ public class MfGeoJSONTest extends TestCase
                 return new MfGeometry(
                     new GeometryFactory().createPoint(coord2));
             }
-            public void toJSON(JSONBuilder builder) {
+            public void toJSON(JSONWriter builder) throws JSONException {
                 builder.key("prop_bar").value("bar");
             }
         };
