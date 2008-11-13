@@ -123,14 +123,8 @@
 
   <repositories>
     <repository>
-      <id>geotools</id>
-      <name>Geotools repository</name>
-      <url>http://maven.geotools.fr/repository</url>
-    </repository>
-    <repository>
-      <id>hmsinc</id>
-      <name>HMS inc</name>
-      <url>https://internal.hmsinc.com/m2-repo</url>
+      <id>org.mapfish</id>
+      <url>http://dev.mapfish.org/maven/repository</url>
     </repository>
   </repositories>
 
