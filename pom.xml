@@ -128,6 +128,13 @@
     </repository>
   </repositories>
 
+  <pluginRepositories>
+    <pluginRepository>
+       <id>org.mapfish</id>
+       <url>http://dev.mapfish.org/maven/repository</url>
+    </pluginRepository>
+  </pluginRepositories>
+
   <licenses>
     <license>
       <name>BSD License</name>
