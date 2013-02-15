@@ -1,0 +1,127 @@
+group = 'org.mapfish.geo'
+version = '1.2.0'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'project-report'
+
+defaultTasks 'install'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+jar {
+  baseName = "mapfish-geo-lib"
+}
+
+def MAPFISH_REPO='http://dev.mapfish.org/maven/repository'
+repositories {
+  mavenCentral()
+  mavenRepo url: "http://www.ibiblio.org/maven2"
+}
+
+configurations.compile.transitive = true
+dependencies {
+  compile ('org.json:json:20080701', 'com.vividsolutions:jts:1.8')//, 'com.vividsolutions.jts:jtsio:1.8')
+  testCompile 'junit:junit:4.7'
+}
+
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+ 
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+  archives jar, javadocJar, sourcesJar
+}
+
+/*
+ * This upload Archives configuration I took from:
+ * http://jedicoder.blogspot.ch/2011/11/automated-gradle-project-deployment-to.html
+ *
+ * For deploying see section about "Create a gradle properties file"
+ */
+// need to sign jars for uploading releases to maven central
+if (Boolean.parseBoolean(enablePublishing)) {
+  apply plugin: 'signing'
+  signing {
+    sign configurations.archives
+  }
+
+  uploadArchives {
+    repositories {
+      mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+        repository(url: "https://$host/service/local/staging/deploy/maven2") {
+          authentication(userName: sonatypeUsername, password: sonatypePassword)
+        }
+        snapshotRepository(url: "https://$host/content/repositories/snapshots")  {
+          authentication(userName: sonatypeUsername, password: sonatypePassword)
+          uniqueVersion = false
+        }
+        pom.project {
+          packaging 'jar'
+          name='Mapfish Geojson libraru'
+          description 'Java library for generating GeoJSON structures'
+          url 'http://www.mapfish.org/'
+
+          scm {
+            url 'https://github.com/mapfish/java-geojson'
+            connection 'scm:https://github.com/mapfish/java-geojson.git'
+            developerConnection 'scm:git@github.com:mapfish/java-geojson.git'
+          }
+
+          licenses {
+            license {
+              name 'GNU General Public License'
+              url 'http://www.gnu.org/licenses/#GPL'
+              distribution 'repo'
+            }
+          }
+          organization {
+            name = 'Camptocamp SA'
+            url = 'http://www.camptocamp.com'
+          }
+          developers {
+            developer {
+              id 'jesseeichar'
+              name 'Jesse Eichar'
+            }
+            developer {
+              id 'elemoine'
+              name 'Eric Lemoine'
+            }
+            developer {
+              id 'fredj'
+              name 'Frederic Junod'
+            }
+          }
+          mailingLists {
+            mailingList {
+              name ='Users'
+              subscribe='users-subscribe@mapfish.org'
+              unsubscribe='users-subscribe@mapfish.org'
+              post='users@mapfish.org'
+              archive='http://www.mapfish.org/pipermail/users/'
+            }
+            mailingList {
+              name ='Dev'
+              subscribe='dev-subscribe@mapfish.org'
+              unsubscribe='dev-subscribe@mapfish.org'
+              post='dev@mapfish.org'
+              archive='http://www.mapfish.org/pipermail/dev/'
+            }
+          }
+        }
+      }
+    }
+  }
+}
