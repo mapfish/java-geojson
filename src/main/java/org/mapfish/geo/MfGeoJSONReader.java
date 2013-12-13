@@ -89,6 +89,9 @@ public class MfGeoJSONReader {
     }
 
     private Geometry decodeJtsGeometry(JSONObject json) throws JSONException {
+        if (json == null) {
+          return null;
+        }
         String type = json.getString("type");
         final Geometry geometry;
 
